@@ -299,7 +299,7 @@ class ThemeRepository implements ThemeRepositoryInterface
 
     public function disable(bool $reset = true): ?string
     {
-        if ($enabledTheme = $this->enabled()) {
+        if (!$enabledTheme = $this->enabled()) {
             return static::THEME_NOT_FOUND;
         }
 
