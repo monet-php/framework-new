@@ -41,6 +41,10 @@ class ThemeResource extends Resource
                                 ->sortable()
                                 ->searchable()
                                 ->wrap(),
+                            Tables\Columns\BadgeColumn::make('version')
+                                ->label('Version')
+                                ->sortable()
+                                ->searchable(),
                             Tables\Columns\BadgeColumn::make('enabled')
                                 ->label('Status')
                                 ->sortable()
@@ -162,6 +166,6 @@ class ThemeResource extends Resource
 
     protected static function getNavigationBadge(): ?string
     {
-        return __(number_format(static::getModel()::count()) . ' Installed');
+        return __(number_format(Theme::query()->count()) . ' Installed');
     }
 }
