@@ -14,15 +14,15 @@ use Monet\Framework\Theme\Theme;
 
 class ThemeRepository implements ThemeRepositoryInterface
 {
-    public const THEME_NOT_FOUND = 'monet.themes.not_found';
+    public const THEME_NOT_FOUND = 'monet::theme.not_found';
 
-    public const MANIFEST_NOT_FOUND = 'monet.themes.manifest_not_found';
+    public const MANIFEST_NOT_FOUND = 'monet::theme.manifest_not_found';
 
-    public const INVALID_PARENT = 'monet.themes.invalid_parent';
+    public const INVALID_PARENT = 'monet::theme.invalid_parent';
 
-    public const CANNOT_DELETE_DIRECTORY = 'monet.themes.cannot_delete_directory';
+    public const DELETE_FAILED = 'monet::theme.delete_failed';
 
-    public const PUBLISH_FAILED = 'monet.themes.publish_failed';
+    public const PUBLISH_FAILED = 'monet::theme.publish_failed';
 
     protected Application $app;
 
@@ -291,7 +291,7 @@ class ThemeRepository implements ThemeRepositoryInterface
         }
 
         if (File::exists($theme->getPath()) && !File::deleteDirectory($theme->getPath())) {
-            return static::CANNOT_DELETE_DIRECTORY;
+            return static::DELETE_FAILED;
         }
 
         $this->reset();

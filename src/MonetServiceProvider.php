@@ -42,6 +42,8 @@ class MonetServiceProvider extends AggregateServiceProvider
 
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
+        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'monet');
+
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__ . '/../dist' => public_path('monet'),
@@ -55,6 +57,10 @@ class MonetServiceProvider extends AggregateServiceProvider
                 ],
                 'config'
             );
+
+            $this->publishes([
+                __DIR__ . '/../resources/lang' => lang_path('vendor/monet')
+            ]);
         }
 
         $this->enableIntroduction();

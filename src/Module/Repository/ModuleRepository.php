@@ -17,15 +17,15 @@ use Monet\Framework\Support\Filesystem;
 
 class ModuleRepository implements ModuleRepositoryInterface
 {
-    public const MODULE_NOT_FOUND = 'monet.modules.not_found';
+    public const MODULE_NOT_FOUND = 'monet::module.not_found';
 
-    public const MANIFEST_NOT_FOUND = 'monet.modules.manifest_not_found';
+    public const MANIFEST_NOT_FOUND = 'monet::module.manifest_not_found';
 
-    public const INVALID_DEPENDENCY = 'monet.modules.invalid_parent';
+    public const INVALID_DEPENDENCY = 'monet::module.invalid_dependency';
 
-    public const CANNOT_DELETE_DIRECTORY = 'monet.modules.cannot_delete_directory';
+    public const DELETE_FAILED = 'monet::module.delete_failed';
 
-    public const PUBLISH_FAILED = 'monet.modules.publish_failed';
+    public const PUBLISH_FAILED = 'monet::module.publish_failed';
 
     protected Application $app;
 
@@ -387,7 +387,7 @@ class ModuleRepository implements ModuleRepositoryInterface
         }
 
         if (File::exists($module->getPath()) && !File::deleteDirectory($module->getPath())) {
-            return static::CANNOT_DELETE_DIRECTORY;
+            return static::DELETE_FAILED;
         }
 
         Settings::forget('monet.modules.' . $module->getName());
