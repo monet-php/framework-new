@@ -30,6 +30,8 @@ class MonetServiceProvider extends AggregateServiceProvider
         $this->app->alias(Filesystem::class, 'files');
         $this->app->singleton(Filesystem::class);
 
+        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'monet');
+
         parent::register();
     }
 
@@ -41,8 +43,6 @@ class MonetServiceProvider extends AggregateServiceProvider
         );
 
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
-
-        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'monet');
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
