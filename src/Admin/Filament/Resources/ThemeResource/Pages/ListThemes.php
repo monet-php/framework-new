@@ -32,13 +32,13 @@ class ListThemes extends ListRecords
             if (!$theme = $themes->install($file, $error)) {
                 Notification::make()
                     ->danger()
-                    ->title(__('monet.themes.install_failed_title'))
+                    ->title(__('monet::theme.install_failed_title'))
                     ->body(__($error))
                     ->send();
             } else {
                 Notification::make()
                     ->success()
-                    ->title(__('monet.themes.install_success_title'))
+                    ->title(__('monet::theme.install_success_title'))
                     ->body($theme->getName())
                     ->send();
 
@@ -60,7 +60,7 @@ class ListThemes extends ListRecords
         if ($error = $themes->enable($record->name)) {
             Notification::make()
                 ->danger()
-                ->title(__('monet.themes.enable_failed_title'))
+                ->title(__('monet::theme.enable_failed_title'))
                 ->body(__($error))
                 ->send();
 
@@ -69,7 +69,7 @@ class ListThemes extends ListRecords
 
         Notification::make()
             ->success()
-            ->title(__('monet.themes.enable_success_title'))
+            ->title(__('monet::theme.enable_success_title'))
             ->body($record->name)
             ->send();
 
@@ -81,7 +81,7 @@ class ListThemes extends ListRecords
         if ($error = $themes->disable($record->name)) {
             Notification::make()
                 ->danger()
-                ->title(__('monet.themes.disable_failed_title'))
+                ->title(__('monet::theme.disable_failed_title'))
                 ->body(__($error))
                 ->send();
 
@@ -90,7 +90,7 @@ class ListThemes extends ListRecords
 
         Notification::make()
             ->success()
-            ->title(__('monet.themes.disable_success_title'))
+            ->title(__('monet::theme.disable_success_title'))
             ->body($record->name)
             ->send();
 
@@ -102,7 +102,7 @@ class ListThemes extends ListRecords
         if ($error = $themes->delete($record->name)) {
             Notification::make()
                 ->danger()
-                ->title(__('monet.themes.delete_failed_title'))
+                ->title(__('monet::theme.delete_failed_title'))
                 ->body(__($error))
                 ->send();
 
@@ -111,7 +111,7 @@ class ListThemes extends ListRecords
 
         Notification::make()
             ->success()
-            ->title(__('monet.themes.delete_success_title'))
+            ->title(__('monet::theme.delete_success_title'))
             ->body($record->name)
             ->send();
 
@@ -123,7 +123,7 @@ class ListThemes extends ListRecords
         if ($error = $themes->publish($record->name)) {
             Notification::make()
                 ->danger()
-                ->title(__('monet.themes.publish_failed_title'))
+                ->title(__('monet::theme.publish_failed_title'))
                 ->body(__($error))
                 ->send();
 
@@ -132,7 +132,7 @@ class ListThemes extends ListRecords
 
         Notification::make()
             ->success()
-            ->title(__('monet.themes.publish_success_title'))
+            ->title(__('monet::theme.publish_success_title'))
             ->body($record->name)
             ->send();
 
