@@ -32,4 +32,10 @@ return [
     'publish_failed_title' => 'Theme publish failed',
 
     'publish_success_title' => 'Theme published successfully',
+
+    'load_failed' => [
+        'title' => 'Theme failed to load',
+
+        'body' => ':theme has been disabled'
+    ]
 ];
