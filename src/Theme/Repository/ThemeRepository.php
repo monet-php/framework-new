@@ -22,6 +22,8 @@ class ThemeRepository implements ThemeRepositoryInterface
 
     public const CANNOT_DELETE_DIRECTORY = 'monet.themes.cannot_delete_directory';
 
+    public const PUBLISH_FAILED = 'monet.themes.publish_failed';
+
     protected Application $app;
 
     protected Filesystem $files;
@@ -325,6 +327,23 @@ class ThemeRepository implements ThemeRepositoryInterface
         }
 
         return $this->parentTheme;
+    }
+
+    public function publish(Theme|string $theme, bool $migrate = true): ?string
+    {
+        if (!($theme instanceof Theme)) {
+            $theme = $this->find($theme);
+        }
+
+        if ($theme === null) {
+            return static::THEME_NOT_FOUND;
+        }
+
+        if (!$this->installer->publish($theme->getProviders(), $migrate)) {
+            return static::PUBLISH_FAILED;
+        }
+
+        return null;
     }
 
     public function boot(): void

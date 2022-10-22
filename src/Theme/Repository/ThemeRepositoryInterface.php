@@ -28,6 +28,8 @@ interface ThemeRepositoryInterface
 
     public function delete(string|Theme $theme): ?string;
 
+    public function publish(string|Theme $module, bool $migrate = true): ?string;
+
     public function boot(): void;
 
     public function reset(bool $clearCache = true): void;
