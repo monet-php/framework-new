@@ -100,23 +100,14 @@ class ThemeRepository implements ThemeRepositoryInterface
             $this->themes[$name] = $this->loader->fromArray($theme);
         }
 
+        $this->loadEnabledTheme();
+
         return true;
     }
 
-    protected function load(): void
+    protected function loadEnabledTheme(): void
     {
-        $this->themes = [];
-        foreach ($this->paths as $path) {
-            $files = $this->discover(base_path($path));
-
-            foreach ($files as $file) {
-                $theme = $this->loader->fromPath($file);
-
-                $this->themes[$theme->getName()] = $theme;
-            }
-        }
-
-        $themeName = Settings::get('monet.themes.enabled');
+        $themeName = Settings::get('monet.theme');
         if ($themeName === null) {
             return;
         }
@@ -128,13 +119,6 @@ class ThemeRepository implements ThemeRepositoryInterface
         if (($parentName = $this->enabledTheme->getParent()) && $parent = $this->find($parentName)) {
             $this->parentTheme = $parent;
         }
-    }
-
-    protected function discover(string $path): array
-    {
-        $search = rtrim($path, '/\\') . DIRECTORY_SEPARATOR . 'composer.json';
-
-        return $this->files->find($search);
     }
 
     public function find(string $name): ?Theme
@@ -153,6 +137,29 @@ class ThemeRepository implements ThemeRepositoryInterface
         }
 
         return $this->themes;
+    }
+
+    protected function load(): void
+    {
+        $this->themes = [];
+        foreach ($this->paths as $path) {
+            $files = $this->discover(base_path($path));
+
+            foreach ($files as $file) {
+                $theme = $this->loader->fromPath($file);
+
+                $this->themes[$theme->getName()] = $theme;
+            }
+        }
+
+        $this->loadEnabledTheme();
+    }
+
+    protected function discover(string $path): array
+    {
+        $search = rtrim($path, '/\\') . DIRECTORY_SEPARATOR . 'composer.json';
+
+        return $this->files->find($search);
     }
 
     public function findOrFail(string $name): Theme
@@ -192,8 +199,6 @@ class ThemeRepository implements ThemeRepositoryInterface
 
         $theme->enable();
 
-        $this->enabledTheme = $theme;
-
         Settings::put('monet.theme', $theme->getName());
 
         if ($reset) {
@@ -231,6 +236,8 @@ class ThemeRepository implements ThemeRepositoryInterface
         }
 
         $this->themes = null;
+        $this->enabledTheme = null;
+        $this->parentTheme = null;
     }
 
     public function clearCache(): void
@@ -303,9 +310,6 @@ class ThemeRepository implements ThemeRepositoryInterface
         $enabledTheme->disable();
 
         Settings::forget('monet.theme');
-
-        $this->parentTheme = null;
-        $this->enabledTheme = null;
 
         if ($reset) {
             $this->reset();
