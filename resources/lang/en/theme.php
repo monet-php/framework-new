@@ -11,6 +11,8 @@ return [
 
     'publish_failed' => 'Theme assets could not be published',
 
+    'install_failed' => 'An unknown error occurred whilst installing theme',
+
     'install_failed_title' => 'Theme install failed',
 
     'install_success_title' => 'Theme installed successfully',

@@ -11,6 +11,8 @@ return [
 
     'publish_failed' => 'Module assets could not be published',
 
+    'install_failed' => 'An unknown error occurred whilst installing module',
+
     'install_failed_title' => 'Module install failed',
 
     'install_success_title' => 'Module installed successfully',
@@ -30,4 +32,10 @@ return [
     'publish_failed_title' => 'Module publish failed',
 
     'publish_success_title' => 'Module published successfully',
+
+    'load_failed' => [
+        'title' => 'Module failed to load',
+
+        'body' => ':module has been disabled'
+    ]
 ];

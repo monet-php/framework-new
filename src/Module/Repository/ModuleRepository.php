@@ -2,6 +2,7 @@
 
 namespace Monet\Framework\Module\Repository;
 
+use Filament\Notifications\Notification;
 use Illuminate\Cache\CacheManager;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Facades\File;
@@ -26,6 +27,8 @@ class ModuleRepository implements ModuleRepositoryInterface
     public const DELETE_FAILED = 'monet::module.delete_failed';
 
     public const PUBLISH_FAILED = 'monet::module.publish_failed';
+
+    public const INSTALL_FAILED = 'monet::module.install_failed';
 
     protected Application $app;
 
@@ -353,27 +356,33 @@ class ModuleRepository implements ModuleRepositoryInterface
 
     public function install(string $path, ?string &$error = null): ?Module
     {
-        if (!($name = $this->installer->install($path, $error))) {
+        return rescue(function () use ($path, &$error) {
+            if (!($name = $this->installer->install($path, $error))) {
+                return null;
+            }
+
+            $this->reset();
+
+            $module = $this->find($name);
+            if ($module === null) {
+                $error = static::MODULE_NOT_FOUND;
+                return null;
+            }
+
+            if ($error = $this->validate($module)) {
+                $this->delete($module);
+                return null;
+            }
+
+            if ($this->bootModule($module)) {
+                $this->installer->publish($module->getProviders());
+            }
+
+            return $module;
+        }, static function () use (&$error) {
+            $error = static::INSTALL_FAILED;
             return null;
-        }
-
-        $this->reset();
-
-        $module = $this->find($name);
-        if ($module === null) {
-            $error = static::MODULE_NOT_FOUND;
-            return null;
-        }
-
-        if ($error = $this->validate($module)) {
-            $this->delete($module);
-            return null;
-        }
-
-        require_once $module->getPath('vendor/autoload.php');
-        $this->installer->publish($module->getProviders());
-
-        return $module;
+        });
     }
 
     public function delete(Module|string $module): ?string
@@ -397,6 +406,42 @@ class ModuleRepository implements ModuleRepositoryInterface
         return null;
     }
 
+    protected function bootModule(Module $module): bool
+    {
+        return rescue(function () use ($module) {
+            if ($error = $this->validate($module)) {
+                $this->disable($module);
+                $this->notifyModuleDisabled($module);
+
+                return false;
+            }
+
+            require_once $module->getPath('vendor/autoload.php');
+
+            foreach ($module->getProviders() as $provider) {
+                $this->app->register($provider);
+            }
+
+            return true;
+        }, function () use ($module) {
+            $this->disable($module, false);
+            $this->notifyModuleDisabled($module);
+
+            return false;
+        });
+    }
+
+    protected function notifyModuleDisabled(string|Module $module): void
+    {
+        $name = $module instanceof Module ? $module->getName() : $module;
+
+        Notification::make()
+            ->danger()
+            ->title(__('monet::module.load_failed.title'))
+            ->body(__('monet::module.load_failed.body', ['module' => $name]))
+            ->send();
+    }
+
     public function publish(Module|string $module, bool $migrate = true): ?string
     {
         if (!($module instanceof Module)) {
@@ -416,18 +461,15 @@ class ModuleRepository implements ModuleRepositoryInterface
 
     public function boot(): void
     {
+        $success = true;
         foreach ($this->ordered() as $module) {
-            if ($error = $this->validate($module)) {
-                $this->disable($module);
-                // TODO: Report why module was disabled
-                continue;
+            if (!$this->bootModule($module)) {
+                $success = false;
             }
+        }
 
-            require_once $module->getPath('vendor/autoload.php');
-
-            foreach ($module->getProviders() as $provider) {
-                $this->app->register($provider);
-            }
+        if (!$success) {
+            $this->reset();
         }
     }
 }

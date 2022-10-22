@@ -2,6 +2,7 @@
 
 namespace Monet\Framework\Theme\Repository;
 
+use Filament\Notifications\Notification;
 use Illuminate\Cache\CacheManager;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Facades\File;
@@ -23,6 +24,8 @@ class ThemeRepository implements ThemeRepositoryInterface
     public const DELETE_FAILED = 'monet::theme.delete_failed';
 
     public const PUBLISH_FAILED = 'monet::theme.publish_failed';
+
+    public const INSTALL_FAILED = 'monet::theme.install_failed';
 
     protected Application $app;
 
@@ -253,27 +256,33 @@ class ThemeRepository implements ThemeRepositoryInterface
 
     public function install(string $path, ?string &$error = null): ?Theme
     {
-        if (!($name = $this->installer->install($path, $error))) {
+        return rescue(function () use ($path, &$error) {
+            if (!($name = $this->installer->install($path, $error))) {
+                return null;
+            }
+
+            $this->reset();
+
+            $theme = $this->find($name);
+            if ($theme === null) {
+                $error = static::THEME_NOT_FOUND;
+                return null;
+            }
+
+            if ($error = $this->validate($theme)) {
+                $this->delete($theme);
+                return null;
+            }
+
+            if ($this->bootTheme($theme)) {
+                $this->installer->publish($theme->getProviders());
+            }
+
+            return $theme;
+        }, static function () use (&$error) {
+            $error = static::INSTALL_FAILED;
             return null;
-        }
-
-        $this->reset();
-
-        $theme = $this->find($name);
-        if ($theme === null) {
-            $error = static::THEME_NOT_FOUND;
-            return null;
-        }
-
-        if ($error = $this->validate($theme)) {
-            $this->delete($theme);
-            return null;
-        }
-
-        require_once $theme->getPath('vendor/autoload.php');
-        $this->installer->publish($theme->getProviders());
-
-        return $theme;
+        });
     }
 
     public function delete(Theme|string $theme): ?string
@@ -329,6 +338,50 @@ class ThemeRepository implements ThemeRepositoryInterface
         return $this->parentTheme;
     }
 
+    protected function bootTheme(Theme $theme): bool
+    {
+        return rescue(function () use ($theme) {
+            if ($error = $this->validate($theme)) {
+                $this->disable();
+                $this->notifyThemeDisabled($theme);
+
+                return false;
+            }
+
+            require_once $theme->getPath('vendor/autoload.php');
+
+            foreach ($theme->getProviders() as $provider) {
+                $this->app->register($provider);
+            }
+
+            if ($parent = $this->parent()) {
+                require_once $parent->getPath('vendor/autoload.php');
+
+                foreach ($parent->getProviders() as $provider) {
+                    $this->app->register($provider);
+                }
+            }
+
+            return true;
+        }, function () use ($theme) {
+            $this->disable();
+            $this->notifyThemeDisabled($theme);
+
+            return false;
+        });
+    }
+
+    protected function notifyThemeDisabled(string|Theme $theme): void
+    {
+        $name = $theme instanceof Theme ? $theme->getName() : $theme;
+
+        Notification::make()
+            ->danger()
+            ->title(__('monet::theme.load_failed.title'))
+            ->body(__('monet::theme.load_failed.body', ['theme' => $name]))
+            ->send();
+    }
+
     public function publish(Theme|string $theme, bool $migrate = true): ?string
     {
         if (!($theme instanceof Theme)) {
@@ -348,27 +401,10 @@ class ThemeRepository implements ThemeRepositoryInterface
 
     public function boot(): void
     {
-        if (!$enabledTheme = $this->enabled()) {
+        if (!$theme = $this->enabled()) {
             return;
         }
 
-        if ($error = $this->validate($enabledTheme)) {
-            $this->disable();
-            // TODO: Report why theme was disabled
-        }
-
-        require_once $enabledTheme->getPath('vendor/autoload.php');
-
-        foreach ($enabledTheme->getProviders() as $provider) {
-            $this->app->register($provider);
-        }
-
-        if ($parent = $this->parent()) {
-            require_once $parent->getPath('vendor/autoload.php');
-
-            foreach ($parent->getProviders() as $provider) {
-                $this->app->register($provider);
-            }
-        }
+        $this->bootTheme($theme);
     }
 }
