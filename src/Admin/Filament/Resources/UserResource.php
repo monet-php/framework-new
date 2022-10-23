@@ -2,18 +2,24 @@
 
 namespace Monet\Framework\Admin\Filament\Resources;
 
+use Closure;
+use DateTimeInterface;
 use Filament\Forms;
 use Filament\Navigation\NavigationItem;
 use Filament\Resources\Form;
+use Filament\Resources\Pages\CreateRecord;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Hash;
 use Monet\Framework\Admin\Filament\Resources\UserResource\Pages\CreateUser;
 use Monet\Framework\Admin\Filament\Resources\UserResource\Pages\EditUser;
 use Monet\Framework\Admin\Filament\Resources\UserResource\Pages\ListUsers;
 use Monet\Framework\Auth\Models\User;
 use Monet\Framework\Transformer\Facades\Transformer;
+use Spatie\Permission\Models\Role;
 
 class UserResource extends Resource
 {
@@ -31,7 +37,86 @@ class UserResource extends Resource
             'monet.admin.users.table',
             $form
                 ->schema([
-                    Forms\Components\TextInput::make('name')
+                    Forms\Components\Card::make()
+                        ->schema([
+                            Forms\Components\TextInput::make(User::getUsernameIdentifierName())
+                                ->required()
+                                ->maxLength(255),
+                            Forms\Components\TextInput::make('email')
+                                ->label('Email address')
+                                ->required()
+                                ->email()
+                                ->unique(User::class, 'email', fn($record) => $record)
+                                ->maxLength(255),
+                            Forms\Components\TextInput::make('password')
+                                ->label('Password')
+                                ->password()
+                                ->dehydrateStateUsing(
+                                    fn(?string $state, Closure $get): string => Hash::make($state, ['user_id' => $get('user_id')])
+                                )
+                                ->dehydrated(fn($state) => filled($state))
+                                ->required(fn(Page $livewire): bool => $livewire instanceof CreateRecord),
+                            Forms\Components\TextInput::make('password_confirmation')
+                                ->label('Confirm password')
+                                ->password(),
+                            Forms\Components\Select::make('roles')
+                                ->label('Roles')
+                                ->multiple()
+                                ->relationship('roles', 'name')
+                                ->saveRelationshipsUsing(function (User $record, $state) {
+                                    $record->syncRoles($state);
+
+                                    if (
+                                        $record->user_code === auth()->id() &&
+                                        !$record->hasPermissionTo('view admin')
+                                    ) {
+                                        $record->assignRole(Role::findById(2));
+                                    }
+
+                                    if (empty($record->roles)) {
+                                        $record->assignRole(Role::findById(1));
+                                    }
+                                })
+                                ->hiddenOn('create'),
+                        ])
+                        ->columns([
+                            'sm' => 2,
+                        ])
+                        ->columnSpan([
+                            'sm' => 2,
+                        ]),
+
+                    Forms\Components\Card::make()
+                        ->schema([
+                            Forms\Components\Toggle::make('email_verified_at')
+                                ->label('Verified')
+                                ->afterStateHydrated(
+                                    function (Forms\Components\Toggle $component, $state): void {
+                                        $component->state($state !== null);
+                                    }
+                                )
+                                ->dehydrated(function (bool $state, ?User $record): bool {
+                                    if ($record === null) {
+                                        return true;
+                                    }
+
+                                    $verified = $record->hasVerifiedEmail();
+
+                                    return $state ? !$verified : $verified;
+                                })
+                                ->dehydrateStateUsing(fn(bool $state): ?DateTimeInterface => $state ? now() : null),
+                            Forms\Components\Placeholder::make('created_at')
+                                ->label('Created at')
+                                ->content(fn(?User $record): string => $record?->created_at?->diffForHumans() ?? '-'),
+                            Forms\Components\Placeholder::make('update_time')
+                                ->label('Modified at')
+                                ->content(fn(?User $record): string => $record?->updated_at?->diffForHumans() ?? '-'),
+                        ])
+                        ->columnSpan(1),
+                ])
+                ->columns([
+                    'sm' => 3,
+                    'lg' => null,
                 ])
         );
     }
@@ -49,9 +134,11 @@ class UserResource extends Resource
                         ->label('Email address')
                         ->sortable()
                         ->searchable(),
-                    Tables\Columns\BadgeColumn::make('hasVerifiedEmail')
-                        ->label('Status')
+                    Tables\Columns\BadgeColumn::make('email_verified_at')
+                        ->label('Verified')
                         ->sortable()
+                        ->hidden(!config('monet.auth.require_email_verification'))
+                        ->getStateUsing(fn(User $record): bool => $record->hasVerifiedEmail())
                         ->enum([
                             true => 'Verified',
                             false => 'Unverified'
@@ -59,6 +146,11 @@ class UserResource extends Resource
                         ->colors([
                             'success' => true,
                             'danger' => false
+                        ])
+                        ->icons([
+                            'heroicon-o-minus-sm',
+                            'heroicon-o-x' => false,
+                            'heroicon-o-check' => true,
                         ]),
                     Tables\Columns\TextColumn::make('created_at')
                         ->label('Created at')

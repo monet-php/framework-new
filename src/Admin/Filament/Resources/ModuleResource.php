@@ -55,6 +55,11 @@ class ModuleResource extends Resource
                                 ->colors([
                                     'success' => true,
                                     'danger' => false
+                                ])
+                                ->icons([
+                                    'heroicon-o-minus-sm',
+                                    'heroicon-o-x' => false,
+                                    'heroicon-o-check' => true,
                                 ]),
                         ]
                     )
