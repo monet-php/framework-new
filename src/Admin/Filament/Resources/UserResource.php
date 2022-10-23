@@ -59,7 +59,17 @@ class UserResource extends Resource
                         ->colors([
                             'success' => true,
                             'danger' => false
-                        ])
+                        ]),
+                    Tables\Columns\TextColumn::make('created_at')
+                        ->label('Created at')
+                        ->date()
+                        ->sortable()
+                        ->searchable(),
+                    Tables\Columns\TextColumn::make('updated_at')
+                        ->label('Updated at')
+                        ->date()
+                        ->sortable()
+                        ->searchable()
                 ])
         );
     }
