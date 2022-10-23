@@ -22,6 +22,13 @@ class ModuleInstaller extends ComponentInstaller implements ModuleInstallerInter
 
     public function install(string $path, ?string &$error = null): ?string
     {
+        $paths = config('monet.modules.paths');
+        if (empty($paths)) {
+            $error = static::INVALID_PATHS_CONFIG;
+
+            return null;
+        }
+
         if (!$zip = $this->getArchive($path)) {
             $error = static::MODULE_NOT_FOUND;
 
@@ -54,13 +61,6 @@ class ModuleInstaller extends ComponentInstaller implements ModuleInstallerInter
             return null;
         }
 
-        $paths = config('monet.modules.paths');
-        if (empty($paths)) {
-            $error = static::INVALID_PATHS_CONFIG;
-
-            return null;
-        }
-
         if (!$this->extract($zip, $name, base_path(Arr::first($paths)))) {
             $error = static::EXTRACTION_FAILED;
 
@@ -73,19 +73,12 @@ class ModuleInstaller extends ComponentInstaller implements ModuleInstallerInter
     protected function validate(array $manifest): bool
     {
         return rescue(static function () use ($manifest) {
-            if (!isset($manifest['name'])) {
-                return false;
-            }
-
-            if (!isset($manifest['extra'])) {
-                return false;
-            }
-
-            if (!isset($manifest['extra']['monet'])) {
-                return false;
-            }
-
-            return isset($manifest['extra']['monet']['module']);
+            return isset(
+                $manifest['name'],
+                $manifest['description'],
+                $manifest['version'],
+                $manifest['extra']['monet']['module']
+            );
         }, false);
     }
 }

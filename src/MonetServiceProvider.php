@@ -30,17 +30,12 @@ class MonetServiceProvider extends AggregateServiceProvider
         $this->app->alias(Filesystem::class, 'files');
         $this->app->singleton(Filesystem::class);
 
-        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'monet');
-
-        parent::register();
-    }
-
-    public function boot(): void
-    {
         $this->loadViewsFrom(
             __DIR__ . '/../resources/views',
             'monet'
         );
+
+        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'monet');
 
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
@@ -63,6 +58,11 @@ class MonetServiceProvider extends AggregateServiceProvider
             ]);
         }
 
+        parent::register();
+    }
+
+    public function boot(): void
+    {
         $this->enableIntroduction();
     }
 

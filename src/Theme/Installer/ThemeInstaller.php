@@ -73,19 +73,12 @@ class ThemeInstaller extends ComponentInstaller implements ThemeInstallerInterfa
     protected function validate(array $manifest): bool
     {
         return rescue(static function () use ($manifest) {
-            if (!isset($manifest['name'])) {
-                return false;
-            }
-
-            if (!isset($manifest['extra'])) {
-                return false;
-            }
-
-            if (!isset($manifest['extra']['monet'])) {
-                return false;
-            }
-
-            return isset($manifest['extra']['monet']['theme']);
+            return isset(
+                $manifest['name'],
+                $manifest['description'],
+                $manifest['version'],
+                $manifest['extra']['monet']['theme']
+            );
         }, false);
     }
 }
