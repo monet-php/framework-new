@@ -6,6 +6,7 @@ use Filament\Facades\Filament;
 use Filament\PluginServiceProvider;
 use Monet\Framework\Admin\Filament\Resources\ModuleResource;
 use Monet\Framework\Admin\Filament\Resources\ThemeResource;
+use Monet\Framework\Admin\Filament\Resources\UserResource;
 
 class AdminServiceProvider extends PluginServiceProvider
 {
@@ -13,7 +14,8 @@ class AdminServiceProvider extends PluginServiceProvider
 
     protected array $resources = [
         ModuleResource::class,
-        ThemeResource::class
+        ThemeResource::class,
+        UserResource::class
     ];
 
     public function packageRegistered(): void
