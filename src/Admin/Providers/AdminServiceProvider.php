@@ -16,11 +16,11 @@ class AdminServiceProvider extends PluginServiceProvider
         ThemeResource::class
     ];
 
-    public function packageBooted(): void
+    public function packageRegistered(): void
     {
-        parent::packageBooted();
+        parent::packageRegistered();
 
-        $this->app->resolving('filament', function () {
+        $this->app->resolving('filament', static function () {
             Filament::serving(static function () {
                 Filament::registerNavigationGroups([
                     'Users',
