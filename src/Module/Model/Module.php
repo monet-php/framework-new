@@ -39,6 +39,16 @@ class Module extends Model
         );
     }
 
+    public function getCasts(): array
+    {
+        return Transformer::transform(
+            'monet.themes.module.model.casts',
+            [
+                'enabled' => 'boolean',
+            ]
+        );
+    }
+
     public function getRows(): array
     {
         return Transformer::transform(
@@ -60,7 +70,8 @@ class Module extends Model
     public function disabled(): Attribute
     {
         return Attribute::make(
-            get: fn(): bool => !$this->enabled
+            get: fn() => !$this->enabled,
+            set: fn($value) => $this->enabled = $value
         );
     }
 }
