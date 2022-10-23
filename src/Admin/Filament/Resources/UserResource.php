@@ -67,7 +67,7 @@ class UserResource extends Resource
                                     $record->syncRoles($state);
 
                                     if (
-                                        $record->user_code === auth()->id() &&
+                                        $record->getAuthIdentifier() === auth()->id() &&
                                         !$record->hasPermissionTo('view admin')
                                     ) {
                                         $record->assignRole(Role::findById(2));
