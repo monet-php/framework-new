@@ -39,7 +39,7 @@ class UserResource extends Resource
                 ->schema([
                     Forms\Components\Card::make()
                         ->schema([
-                            Forms\Components\TextInput::make(User::getUsernameIdentifierName())
+                            Forms\Components\TextInput::make(User::getUsernameName())
                                 ->required()
                                 ->maxLength(255),
                             Forms\Components\TextInput::make('email')
