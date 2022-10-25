@@ -16,21 +16,23 @@ return [
 
         'extraction_failed' => 'Failed to extract module',
 
+        'success' => [
+            'title' => 'Module installed successfully',
+
+            'body' => ':name'
+        ],
+
         'failed' => [
             'title' => 'Module install failed',
 
             'body' => 'An unknown error occurred whilst installing module'
         ],
 
-        'success' => [
-            'title' => 'Module installed successfully',
-
-            'body' => ''
-        ],
-
         'publish' => [
             'success' => [
-                'title' => 'Module published successfully'
+                'title' => 'Module published successfully',
+
+                'body' => ':name'
             ],
 
             'failed' => [
@@ -43,7 +45,9 @@ return [
 
     'enable' => [
         'success' => [
-            'title' => 'Module enabled successfully'
+            'title' => 'Module enabled successfully',
+
+            'body' => ':name'
         ],
 
         'failed' => [
@@ -53,7 +57,9 @@ return [
 
     'disable' => [
         'success' => [
-            'title' => 'Module disabled successfully'
+            'title' => 'Module disabled successfully',
+
+            'body' => ':name'
         ],
 
         'failed' => [
@@ -63,7 +69,9 @@ return [
 
     'delete' => [
         'success' => [
-            'title' => 'Module deleted successfully'
+            'title' => 'Module deleted successfully',
+
+            'body' => ':name'
         ],
 
         'failed' => [
@@ -75,7 +83,7 @@ return [
         'failed' => [
             'title' => 'Module failed to load',
 
-            'body' => ':module has been disabled'
+            'body' => ':name has been disabled'
         ]
     ],
 ];

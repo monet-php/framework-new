@@ -39,7 +39,7 @@ class ListModules extends ListRecords
                 Notification::make()
                     ->success()
                     ->title(__('monet::module.installer.success.title'))
-                    ->body($module->getName())
+                    ->body(__('monet::module.installer.success.body', ['name' => $module->getName()]))
                     ->send();
 
                 $success = true;
@@ -70,7 +70,7 @@ class ListModules extends ListRecords
         Notification::make()
             ->success()
             ->title(__('monet::module.enable.success.title'))
-            ->body($record->name)
+            ->body(__('monet::module.enable.success.body', ['name' => $record->name]))
             ->send();
 
         return redirect()->route('filament.resources.extend/modules.index');
@@ -91,7 +91,7 @@ class ListModules extends ListRecords
         Notification::make()
             ->success()
             ->title(__('monet::module.disable.success.title'))
-            ->body($record->name)
+            ->body(__('monet::module.disable.success.body', ['name' => $record->name]))
             ->send();
 
         return redirect()->route('filament.resources.extend/modules.index');
@@ -112,7 +112,7 @@ class ListModules extends ListRecords
         Notification::make()
             ->success()
             ->title(__('monet::module.delete.success.title'))
-            ->body($record->name)
+            ->body(__('monet::module.delete.success.body', ['name' => $record->name]))
             ->send();
 
         return redirect()->route('filament.resources.extend/modules.index');
@@ -133,7 +133,7 @@ class ListModules extends ListRecords
         Notification::make()
             ->success()
             ->title(__('monet::module.publish.success.title'))
-            ->body($record->name)
+            ->body(__('monet::module.publish.success.body', ['name' => $record->name]))
             ->send();
 
         return redirect()->route('filament.resources.extend/modules.index');

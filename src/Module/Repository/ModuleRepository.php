@@ -439,8 +439,8 @@ class ModuleRepository implements ModuleRepositoryInterface
 
             Notification::make()
                 ->danger()
-                ->title(__('monet::module.load_failed.title'))
-                ->body(__('monet::module.load_failed.body', ['module' => $name]))
+                ->title(__('monet::module.boot.failed.title'))
+                ->body(__('monet::module.boot.failed.body', ['name' => $name]))
                 ->send();
         });
     }

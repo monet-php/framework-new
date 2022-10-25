@@ -23,6 +23,9 @@ class ThemeServiceProvider extends ServiceProvider
             ThemeInstallerInterface::class,
             ThemeInstaller::class
         );
+        $this->app->when(ThemeInstaller::class)
+            ->needs('$paths')
+            ->giveConfig('monet.themes.paths');
 
         $this->app->alias(
             ThemeRepositoryInterface::class,

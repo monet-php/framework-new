@@ -22,11 +22,11 @@ class ThemeRepository implements ThemeRepositoryInterface
 
     public const INVALID_PARENT = 'monet::theme.invalid_parent';
 
-    public const DELETE_FAILED = 'monet::theme.delete_failed';
+    public const DELETE_FAILED = 'monet::theme.delete.failed.body';
 
-    public const PUBLISH_FAILED = 'monet::theme.publish_failed';
+    public const PUBLISH_FAILED = 'monet::theme.publish.failed.body';
 
-    public const INSTALL_FAILED = 'monet::theme.install_failed';
+    public const INSTALL_FAILED = 'monet::theme.install.failed.body';
 
     protected Application $app;
 
@@ -379,8 +379,8 @@ class ThemeRepository implements ThemeRepositoryInterface
 
             Notification::make()
                 ->danger()
-                ->title(__('monet::theme.load_failed.title'))
-                ->body(__('monet::theme.load_failed.body', ['theme' => $name]))
+                ->title(__('monet::theme.boot.failed.title'))
+                ->body(__('monet::theme.boot.failed.body', ['name' => $name]))
                 ->send();
         });
     }

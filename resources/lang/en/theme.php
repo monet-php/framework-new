@@ -5,37 +5,85 @@ return [
 
     'manifest_not_found' => 'Theme manifest could not be found',
 
-    'invalid_parent' => 'Module has an invalid parent theme',
+    'invalid_parent' => 'Theme has an invalid parent theme',
 
-    'delete_failed' => 'Invalid permissions on theme directory',
+    'installer' => [
+        'invalid_manifest' => 'Theme manifest is invalid',
 
-    'publish_failed' => 'Theme assets could not be published',
+        'already_installed' => 'Theme is already installed',
 
-    'install_failed' => 'An unknown error occurred whilst installing theme',
+        'invalid_paths_config' => 'Paths configuration is invalid',
 
-    'install_failed_title' => 'Theme install failed',
+        'extraction_failed' => 'Failed to extract theme',
 
-    'install_success_title' => 'Theme installed successfully',
+        'success' => [
+            'title' => 'Theme installed successfully',
 
-    'enable_failed_title' => 'Theme enable failed',
+            'body' => ':name'
+        ],
 
-    'enable_success_title' => 'Theme enabled successfully',
+        'failed' => [
+            'title' => 'Theme install failed',
 
-    'disable_failed_title' => 'Theme disable failed',
+            'body' => 'An unknown error occurred whilst installing theme'
+        ],
 
-    'disable_success_title' => 'Theme disabled successfully',
+        'publish' => [
+            'success' => [
+                'title' => 'Theme published successfully',
 
-    'delete_failed_title' => ' Theme deletion failed',
+                'body' => ':name'
+            ],
 
-    'delete_success_title' => 'Theme deleted successfully',
+            'failed' => [
+                'title' => 'Theme publish failed',
 
-    'publish_failed_title' => 'Theme publish failed',
+                'body' => 'Theme assets could not be published'
+            ]
+        ],
+    ],
 
-    'publish_success_title' => 'Theme published successfully',
+    'enable' => [
+        'success' => [
+            'title' => 'Theme enabled successfully',
 
-    'load_failed' => [
-        'title' => 'Theme failed to load',
+            'body' => ':name'
+        ],
 
-        'body' => ':theme has been disabled'
-    ]
+        'failed' => [
+            'title' => 'Theme enable failed'
+        ]
+    ],
+
+    'disable' => [
+        'success' => [
+            'title' => 'Theme disabled successfully',
+
+            'body' => ':name'
+        ],
+
+        'failed' => [
+            'title' => 'Theme disable failed'
+        ]
+    ],
+
+    'delete' => [
+        'success' => [
+            'title' => 'Theme deleted successfully',
+
+            'body' => ':name'
+        ],
+
+        'failed' => [
+            'title' => 'Theme could not be deleted'
+        ]
+    ],
+
+    'boot' => [
+        'failed' => [
+            'title' => 'Theme failed to load',
+
+            'body' => ':name has been disabled'
+        ]
+    ],
 ];
