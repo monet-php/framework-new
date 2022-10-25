@@ -27,20 +27,6 @@ return [
 
             'body' => 'An unknown error occurred whilst installing module'
         ],
-
-        'publish' => [
-            'success' => [
-                'title' => 'Module published successfully',
-
-                'body' => ':name'
-            ],
-
-            'failed' => [
-                'title' => 'Module publish failed',
-
-                'body' => 'Module assets could not be published'
-            ]
-        ],
     ],
 
     'enable' => [
@@ -76,6 +62,20 @@ return [
 
         'failed' => [
             'title' => 'Module could not be deleted'
+        ]
+    ],
+
+    'publish' => [
+        'success' => [
+            'title' => 'Module published successfully',
+
+            'body' => ':name'
+        ],
+
+        'failed' => [
+            'title' => 'Module publish failed',
+
+            'body' => 'Module assets could not be published'
         ]
     ],
 

@@ -27,20 +27,6 @@ return [
 
             'body' => 'An unknown error occurred whilst installing theme'
         ],
-
-        'publish' => [
-            'success' => [
-                'title' => 'Theme published successfully',
-
-                'body' => ':name'
-            ],
-
-            'failed' => [
-                'title' => 'Theme publish failed',
-
-                'body' => 'Theme assets could not be published'
-            ]
-        ],
     ],
 
     'enable' => [
@@ -76,6 +62,20 @@ return [
 
         'failed' => [
             'title' => 'Theme could not be deleted'
+        ]
+    ],
+
+    'publish' => [
+        'success' => [
+            'title' => 'Theme published successfully',
+
+            'body' => ':name'
+        ],
+
+        'failed' => [
+            'title' => 'Theme publish failed',
+
+            'body' => 'Theme assets could not be published'
         ]
     ],
 
