@@ -8,17 +8,17 @@ use Monet\Framework\Module\Facades\Modules;
 
 class ModuleInstaller extends ComponentInstaller implements ModuleInstallerInterface
 {
-    public const MODULE_NOT_FOUND = 'monet.modules.installer.not_found';
+    public const MODULE_NOT_FOUND = 'monet::module.installer.not_found';
 
-    public const MANIFEST_NOT_FOUND = 'monet.modules.installer.manifest_not_found';
+    public const MANIFEST_NOT_FOUND = 'monet::module.installer.manifest_not_found';
 
-    public const INVALID_MANIFEST = 'monet.modules.installer.invalid_manifest';
+    public const INVALID_MANIFEST = 'monet::module.installer.invalid_manifest';
 
-    public const MODULE_ALREADY_INSTALLED = 'monet.modules.installer.already_installed';
+    public const MODULE_ALREADY_INSTALLED = 'monet::module.installer.already_installed';
 
-    public const INVALID_PATHS_CONFIG = 'monet.modules.installer.invalid_paths_config';
+    public const INVALID_PATHS_CONFIG = 'monet::module.installer.invalid_paths_config';
 
-    public const EXTRACTION_FAILED = 'monet.modules.installer.extraction_failed';
+    public const EXTRACTION_FAILED = 'monet::module.installer.extraction_failed';
 
     public function install(string $path, ?string &$error = null): ?string
     {

@@ -37,5 +37,19 @@ return [
         'title' => 'Module failed to load',
 
         'body' => ':module has been disabled'
+    ],
+
+    'installer' => [
+        'not_found' => 'Module could not be found',
+
+        'manifest_not_found' => 'Module manifest could not be found',
+
+        'invalid_manifest' => 'Module manifest is invalid',
+
+        'already_installed' => 'Module is already installed',
+
+        'invalid_paths_config' => 'Paths configuration is invalid',
+
+        'extraction_failed' => 'Failed to extract module'
     ]
 ];
