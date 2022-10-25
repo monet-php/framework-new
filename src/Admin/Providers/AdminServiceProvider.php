@@ -25,10 +25,10 @@ class AdminServiceProvider extends PluginServiceProvider
         $this->app->resolving('filament', static function () {
             Filament::serving(static function () {
                 Filament::registerNavigationGroups([
-                    'Users',
-                    'Appearance',
-                    'Extend',
-                    'Administration',
+                    10 => 'Users',
+                    20 => 'Appearance',
+                    30 => 'Extend',
+                    40 => 'Administration',
                 ]);
 
                 Filament::registerTheme(
