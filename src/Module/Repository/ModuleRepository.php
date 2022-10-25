@@ -25,11 +25,11 @@ class ModuleRepository implements ModuleRepositoryInterface
 
     public const INVALID_DEPENDENCY = 'monet::module.invalid_dependency';
 
-    public const DELETE_FAILED = 'monet::module.delete_failed';
+    public const DELETE_FAILED = 'monet::module.delete.failed.body';
 
-    public const PUBLISH_FAILED = 'monet::module.publish_failed';
+    public const PUBLISH_FAILED = 'monet::module.publish.failed.body';
 
-    public const INSTALL_FAILED = 'monet::module.install_failed';
+    public const INSTALL_FAILED = 'monet::module.install.failed.body';
 
     protected Application $app;
 

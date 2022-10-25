@@ -17,8 +17,8 @@ class ListModules extends ListRecords
 
     public function installModules(
         ModuleRepositoryInterface $modules,
-        ComponentContainer        $form,
-        array                     $data
+        ComponentContainer $form,
+        array $data
     )
     {
         [$component] = $form->getComponents();
@@ -32,13 +32,13 @@ class ListModules extends ListRecords
             if (!$module = $modules->install($file, $error)) {
                 Notification::make()
                     ->danger()
-                    ->title(__('monet::modules.install_failed_title'))
+                    ->title(__('monet::modules.installer.failed.title'))
                     ->body(__($error))
                     ->send();
             } else {
                 Notification::make()
                     ->success()
-                    ->title(__('monet::modules.install_success_title'))
+                    ->title(__('monet::modules.installer.success.title'))
                     ->body($module->getName())
                     ->send();
 
@@ -60,7 +60,7 @@ class ListModules extends ListRecords
         if ($error = $modules->enable($record->name)) {
             Notification::make()
                 ->danger()
-                ->title(__('monet::modules.enable_failed_title'))
+                ->title(__('monet::modules.enable.failed.title'))
                 ->body(__($error))
                 ->send();
 
@@ -69,7 +69,7 @@ class ListModules extends ListRecords
 
         Notification::make()
             ->success()
-            ->title(__('monet::modules.enable_success_title'))
+            ->title(__('monet::modules.enable.success.title'))
             ->body($record->name)
             ->send();
 
@@ -81,7 +81,7 @@ class ListModules extends ListRecords
         if ($error = $modules->disable($record->name)) {
             Notification::make()
                 ->danger()
-                ->title(__('monet::modules.disable_failed_title'))
+                ->title(__('monet::modules.disable.failed.title'))
                 ->body(__($error))
                 ->send();
 
@@ -90,7 +90,7 @@ class ListModules extends ListRecords
 
         Notification::make()
             ->success()
-            ->title(__('monet::modules.disable_success_title'))
+            ->title(__('monet::modules.disable.success.title'))
             ->body($record->name)
             ->send();
 
@@ -102,7 +102,7 @@ class ListModules extends ListRecords
         if ($error = $modules->delete($record->name)) {
             Notification::make()
                 ->danger()
-                ->title(__('monet::modules.delete_failed_title'))
+                ->title(__('monet::modules.delete.failed.title'))
                 ->body(__($error))
                 ->send();
 
@@ -111,7 +111,7 @@ class ListModules extends ListRecords
 
         Notification::make()
             ->success()
-            ->title(__('monet::modules.delete_success_title'))
+            ->title(__('monet::modules.delete.success.title'))
             ->body($record->name)
             ->send();
 
@@ -123,7 +123,7 @@ class ListModules extends ListRecords
         if ($error = $modules->publish($record->name)) {
             Notification::make()
                 ->danger()
-                ->title(__('monet::modules.publish_failed_title'))
+                ->title(__('monet::modules.publish.failed.title'))
                 ->body(__($error))
                 ->send();
 
@@ -132,7 +132,7 @@ class ListModules extends ListRecords
 
         Notification::make()
             ->success()
-            ->title(__('monet::modules.publish_success_title'))
+            ->title(__('monet::modules.publish.success.title'))
             ->body($record->name)
             ->send();
 

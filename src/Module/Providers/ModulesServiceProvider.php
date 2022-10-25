@@ -23,6 +23,9 @@ class ModulesServiceProvider extends ServiceProvider
             ModuleInstallerInterface::class,
             ModuleInstaller::class
         );
+        $this->app->when(ModuleInstaller::class)
+            ->needs('$paths')
+            ->giveConfig('monet.modules.paths');
 
         $this->app->alias(
             ModuleRepositoryInterface::class,

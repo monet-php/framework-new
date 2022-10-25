@@ -7,49 +7,75 @@ return [
 
     'invalid_dependency' => 'Module has an invalid dependency',
 
-    'delete_failed' => 'Module could not be deleted',
-
-    'publish_failed' => 'Module assets could not be published',
-
-    'install_failed' => 'An unknown error occurred whilst installing module',
-
-    'install_failed_title' => 'Module install failed',
-
-    'install_success_title' => 'Module installed successfully',
-
-    'enable_failed_title' => 'Module enable failed',
-
-    'enable_success_title' => 'Module enabled successfully',
-
-    'disable_failed_title' => 'Module disable failed',
-
-    'disable_success_title' => 'Module disabled successfully',
-
-    'delete_failed_title' => ' Module deletion failed',
-
-    'delete_success_title' => 'Module deleted successfully',
-
-    'publish_failed_title' => 'Module publish failed',
-
-    'publish_success_title' => 'Module published successfully',
-
-    'load_failed' => [
-        'title' => 'Module failed to load',
-
-        'body' => ':module has been disabled'
-    ],
-
     'installer' => [
-        'not_found' => 'Module could not be found',
-
-        'manifest_not_found' => 'Module manifest could not be found',
-
         'invalid_manifest' => 'Module manifest is invalid',
 
         'already_installed' => 'Module is already installed',
 
         'invalid_paths_config' => 'Paths configuration is invalid',
 
-        'extraction_failed' => 'Failed to extract module'
-    ]
+        'extraction_failed' => 'Failed to extract module',
+
+        'failed' => [
+            'title' => 'Module install failed',
+
+            'body' => 'An unknown error occurred whilst installing module'
+        ],
+
+        'success' => [
+            'title' => 'Module installed successfully',
+
+            'body' => ''
+        ],
+
+        'publish' => [
+            'success' => [
+                'title' => 'Module published successfully'
+            ],
+
+            'failed' => [
+                'title' => 'Module publish failed',
+
+                'body' => 'Module assets could not be published'
+            ]
+        ],
+    ],
+
+    'enable' => [
+        'success' => [
+            'title' => 'Module enabled successfully'
+        ],
+
+        'failed' => [
+            'title' => 'Module enable failed'
+        ]
+    ],
+
+    'disable' => [
+        'success' => [
+            'title' => 'Module disabled successfully'
+        ],
+
+        'failed' => [
+            'title' => 'Module disable failed'
+        ]
+    ],
+
+    'delete' => [
+        'success' => [
+            'title' => 'Module deleted successfully'
+        ],
+
+        'failed' => [
+            'title' => 'Module could not be deleted'
+        ]
+    ],
+
+    'boot' => [
+        'failed' => [
+            'title' => 'Module failed to load',
+
+            'body' => ':module has been disabled'
+        ]
+    ],
 ];

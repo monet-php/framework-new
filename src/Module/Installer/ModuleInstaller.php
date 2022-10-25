@@ -8,9 +8,9 @@ use Monet\Framework\Module\Facades\Modules;
 
 class ModuleInstaller extends ComponentInstaller implements ModuleInstallerInterface
 {
-    public const MODULE_NOT_FOUND = 'monet::module.installer.not_found';
+    public const MODULE_NOT_FOUND = 'monet::module.not_found';
 
-    public const MANIFEST_NOT_FOUND = 'monet::module.installer.manifest_not_found';
+    public const MANIFEST_NOT_FOUND = 'monet::module.manifest_not_found';
 
     public const INVALID_MANIFEST = 'monet::module.installer.invalid_manifest';
 
@@ -20,10 +20,16 @@ class ModuleInstaller extends ComponentInstaller implements ModuleInstallerInter
 
     public const EXTRACTION_FAILED = 'monet::module.installer.extraction_failed';
 
+    protected array $paths;
+
+    public function __construct(array $paths)
+    {
+        $this->paths = $paths;
+    }
+
     public function install(string $path, ?string &$error = null): ?string
     {
-        $paths = config('monet.modules.paths');
-        if (empty($paths)) {
+        if (empty($this->paths)) {
             $error = static::INVALID_PATHS_CONFIG;
 
             return null;
@@ -61,7 +67,7 @@ class ModuleInstaller extends ComponentInstaller implements ModuleInstallerInter
             return null;
         }
 
-        if (!$this->extract($zip, $name, base_path(Arr::first($paths)))) {
+        if (!$this->extract($zip, $name, base_path(Arr::first($this->paths)))) {
             $error = static::EXTRACTION_FAILED;
 
             return null;
