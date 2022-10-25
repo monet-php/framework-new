@@ -2,6 +2,7 @@
 
 namespace Monet\Framework\Theme\Repository;
 
+use Filament\Facades\Filament;
 use Filament\Notifications\Notification;
 use Illuminate\Cache\CacheManager;
 use Illuminate\Contracts\Foundation\Application;
@@ -50,14 +51,14 @@ class ThemeRepository implements ThemeRepositoryInterface
     protected ?Theme $parentTheme = null;
 
     public function __construct(
-        Application             $app,
-        Filesystem              $files,
-        ThemeLoaderInterface    $loader,
+        Application $app,
+        Filesystem $files,
+        ThemeLoaderInterface $loader,
         ThemeInstallerInterface $installer,
-        CacheManager            $cache,
-        bool                    $cacheEnabled,
-        string                  $cacheKey,
-        array                   $paths,
+        CacheManager $cache,
+        bool $cacheEnabled,
+        string $cacheKey,
+        array $paths,
     )
     {
         $this->app = $app;
@@ -373,13 +374,15 @@ class ThemeRepository implements ThemeRepositoryInterface
 
     protected function notifyThemeDisabled(string|Theme $theme): void
     {
-        $name = $theme instanceof Theme ? $theme->getName() : $theme;
+        Filament::serving(static function () use ($theme): void {
+            $name = $theme instanceof Theme ? $theme->getName() : $theme;
 
-        Notification::make()
-            ->danger()
-            ->title(__('monet::theme.load_failed.title'))
-            ->body(__('monet::theme.load_failed.body', ['theme' => $name]))
-            ->send();
+            Notification::make()
+                ->danger()
+                ->title(__('monet::theme.load_failed.title'))
+                ->body(__('monet::theme.load_failed.body', ['theme' => $name]))
+                ->send();
+        });
     }
 
     public function publish(Theme|string $theme, bool $migrate = true): ?string

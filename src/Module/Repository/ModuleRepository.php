@@ -2,6 +2,7 @@
 
 namespace Monet\Framework\Module\Repository;
 
+use Filament\Facades\Filament;
 use Filament\Notifications\Notification;
 use Illuminate\Cache\CacheManager;
 use Illuminate\Contracts\Foundation\Application;
@@ -53,15 +54,15 @@ class ModuleRepository implements ModuleRepositoryInterface
     protected ?array $orderedModules = null;
 
     public function __construct(
-        Application              $app,
-        Filesystem               $files,
-        ModuleLoaderInterface    $loader,
+        Application $app,
+        Filesystem $files,
+        ModuleLoaderInterface $loader,
         ModuleInstallerInterface $installer,
-        CacheManager             $cache,
-        bool                     $cacheEnabled,
-        string                   $allCacheKey,
-        string                   $orderedCacheKey,
-        array                    $paths,
+        CacheManager $cache,
+        bool $cacheEnabled,
+        string $allCacheKey,
+        string $orderedCacheKey,
+        array $paths,
     )
     {
         $this->app = $app;
@@ -433,13 +434,15 @@ class ModuleRepository implements ModuleRepositoryInterface
 
     protected function notifyModuleDisabled(string|Module $module): void
     {
-        $name = $module instanceof Module ? $module->getName() : $module;
+        Filament::serving(static function () use ($module): void {
+            $name = $module instanceof Module ? $module->getName() : $module;
 
-        Notification::make()
-            ->danger()
-            ->title(__('monet::module.load_failed.title'))
-            ->body(__('monet::module.load_failed.body', ['module' => $name]))
-            ->send();
+            Notification::make()
+                ->danger()
+                ->title(__('monet::module.load_failed.title'))
+                ->body(__('monet::module.load_failed.body', ['module' => $name]))
+                ->send();
+        });
     }
 
     public function publish(Module|string $module, bool $migrate = true): ?string
