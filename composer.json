@@ -37,7 +37,10 @@
         "psr-4": {
             "Monet\\Framework\\": "src",
             "Monet\\Framework\\Seeders\\": "database/seeders"
-        }
+        },
+        "classmap": [
+            "helpers/functions.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
