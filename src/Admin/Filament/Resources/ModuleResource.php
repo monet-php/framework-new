@@ -167,7 +167,7 @@ class ModuleResource extends Resource
 
     public static function getGlobalSearchResultUrl(Model $record): string
     {
-        return static::getUrl('index');
+        return static::getUrl();
     }
 
     protected static function getNavigationBadge(): ?string
