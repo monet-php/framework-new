@@ -155,8 +155,9 @@ class ThemeResource extends Resource
         return Transformer::transform(
             'monet.admin.themes.search.details',
             [
-                'description' => $record->description,
-                'version' => $record->version
+                'Description' => $record->description,
+                'Version' => $record->version,
+                'Status' => $record->enabled ? 'Enabled' : 'Disabled'
             ],
             [
                 'theme' => $record

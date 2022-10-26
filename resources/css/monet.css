@@ -110,3 +110,8 @@ select,
     z-index: 1;
     top: -1px;
 }
+
+.filament-global-search-result a p span {
+    @apply block;
+    @apply ml-0;
+}

@@ -199,7 +199,8 @@ class UserResource extends Resource
         return Transformer::transform(
             'monet.admin.users.search.details',
             [
-                'email' => $record->email
+                'Name' => $record->getUsername(),
+                'Email address' => $record->email
             ],
             [
                 'user' => $record
