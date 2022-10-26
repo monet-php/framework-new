@@ -38,7 +38,7 @@
             "Monet\\Framework\\": "src",
             "Monet\\Framework\\Seeders\\": "database/seeders"
         },
-        "classmap": [
+        "files": [
             "helpers/functions.php"
         ]
     },
