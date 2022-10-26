@@ -33,6 +33,6 @@ class Monet
             $groups[] = $group;
         }
 
-        return $groups;
+        return array_merge(...$groups);
     }
 }
