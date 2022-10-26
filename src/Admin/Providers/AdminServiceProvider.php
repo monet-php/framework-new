@@ -7,6 +7,7 @@ use Filament\PluginServiceProvider;
 use Monet\Framework\Admin\Filament\Resources\ModuleResource;
 use Monet\Framework\Admin\Filament\Resources\ThemeResource;
 use Monet\Framework\Admin\Filament\Resources\UserResource;
+use Monet\Framework\Monet;
 
 class AdminServiceProvider extends PluginServiceProvider
 {
@@ -22,14 +23,16 @@ class AdminServiceProvider extends PluginServiceProvider
     {
         parent::packageRegistered();
 
+        Monet::groups([
+            20 => 'Users',
+            40 => 'Appearance',
+            60 => 'Extend',
+            80 => 'Administration'
+        ]);
+
         $this->app->resolving('filament', static function () {
             Filament::serving(static function () {
-                Filament::registerNavigationGroups([
-                    'Users' => 10,
-                    'Appearance' => 20,
-                    'Extend' => 30,
-                    'Administration' => 40,
-                ]);
+                Filament::registerNavigationGroups(Monet::getGroups());
 
                 Filament::registerTheme(
                     mix('css/monet.css', 'monet'),
