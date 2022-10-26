@@ -111,7 +111,7 @@ select,
     top: -1px;
 }
 
-.filament-global-search-result a p span {
+.filament-global-search-result a p > span {
     @apply block;
-    @apply ml-0;
+    @apply !ml-0;
 }
