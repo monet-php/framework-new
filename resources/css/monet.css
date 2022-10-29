@@ -125,3 +125,8 @@ select,
 .filament-forms-field-wrapper .prose {
     @apply text-sm;
 }
+
+.filepond--root {
+    @apply font-sans;
+    @apply text-sm;
+}
