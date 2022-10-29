@@ -130,3 +130,7 @@ select,
     @apply font-sans;
     @apply text-sm;
 }
+
+.filament-sidebar-header:before {
+    @apply !hidden;
+}
