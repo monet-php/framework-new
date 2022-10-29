@@ -115,3 +115,13 @@ select,
     @apply block;
     @apply !ml-0;
 }
+
+.filament-tables-column-wrapper,
+.filament-forms-placeholder-component,
+.filament-forms-field-wrapper input,
+.filament-forms-field-wrapper select,
+.filament-global-search-input input,
+.filament-tables-search-input input,
+.filament-forms-field-wrapper .prose {
+    @apply text-sm;
+}

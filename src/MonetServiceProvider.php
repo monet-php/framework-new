@@ -43,9 +43,7 @@ class MonetServiceProvider extends AggregateServiceProvider
             $this->publishes([
                 __DIR__ . '/../dist' => public_path('monet'),
             ], 'assets');
-        }
 
-        if ($this->app->runningInConsole()) {
             $this->publishes(
                 [
                     __DIR__ . '/../config/monet.php' => config_path('monet.php'),
